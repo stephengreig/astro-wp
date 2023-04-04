@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getAllPagesWithSlugs, getPageBySlug } from '../lib/api';
+
+// Blocks
+import CopyFullWidth from '../components/blocks/CopyFullWidth.astro';
+
+export async function getStaticPaths() {
+  const pagesWithSlugs = await getAllPagesWithSlugs();
+  return pagesWithSlugs.edges.map(({ node }) => {
+    return {
+      params: { slug: node.slug },
+    };
+  });
+}
+
+const { slug } = Astro.params;
+const page = await getPageBySlug(slug);
+
+const blocks = page.blocks;
+---
+<Layout title={page.title}>
+
+  <h1>{page.title}</h1>
+
+  <!-- {JSON.parse(page.blocks[0].attributes.data).hero_headline} -->
+
+  {blocks.map(( block ) => {
+    switch (block.name) {
+      case 'acf/copy-full-width':
+        return (
+          <CopyFullWidth {...JSON.parse(block.attributes.data)} />
+        );
+      default:
+        return (
+          <strong>Unknown type</strong>
+        )
+    }
+  })}
+
+</Layout>

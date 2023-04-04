@@ -1,0 +1,24 @@
+---
+let { title, heading_level, copy, alignment, ctas, block_settings_background_colour, block_settings_margins } = Astro.props;
+
+let bg_colour = block_settings_background_colour;
+let margins = block_settings_margins;
+let cta_count = ctas;
+
+console.log(Astro.props);
+---
+
+<div class={`w-full ${bg_colour} ${bg_colour == 'bg-tandark' && 'text-black'} text-${alignment} ${margins} ${bg_colour == 'bg-transparent' ? 'py-8 md:py-14 2xl:py-20' : 'py-14 md:py-20 2xl:py-32'} font-light px-6 md:px-12`}>
+  <div class="w-full max-w-screen-md mx-auto">
+
+    {title ? (
+      <h1 class="uppercase tracking-wider text-xl md:text-2xl 2xl:text-3xl mb-6 2xl:mb-8">{title}</h1>
+    ) : ''}
+
+    {copy ? (
+      <div set:html={copy} class="copy copy--enlarge-first-p mb-8 2xl:mb-10">
+      </div>
+    ): ''}
+
+  </div>
+</div>
